@@ -70,7 +70,7 @@ export class Component {
     // 清除DOM对象
     this.range.deleteContents();
     // 重新渲染组件, 获取新的虚拟DOM
-    let vdom = this.render()
+    let vdom = this.render();
     // 将更新后的DOM对象重新挂载到原位置
     vdom.mountTo(this.range);
     // 在清除占位符后, range会发生偏移,因此暂时无法清除占位符
@@ -82,9 +82,10 @@ export class Component {
   setState(state) {
     let merge = (oldState, newState) => {
       for (let p in newState) {
-        if (typeof newState[p] === "object") {
+        if (typeof newState[p] === "object" && newState[p] !== null) {
           if (typeof oldState[p] !== "object") {
-            oldState[p] = {};
+            if (newState[p] instanceof Array) oldState[p] = [];
+            else oldState[p] = {};
           }
           merge(oldState[p], newState[p]);
         } else {
@@ -120,6 +121,7 @@ export let ToyReact = {
         if (typeof child === "object" && child instanceof Array) {
           insertChildren(child);
         } else {
+          if (child === null || child === void 0) child = "";
           if (
             !(child instanceof Component) &&
             !(child instanceof ElementWrapper) &&
