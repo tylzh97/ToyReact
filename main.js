@@ -4,27 +4,55 @@
 
 import { ToyReact, Component } from "./ToyReact";
 
-class MyComponent extends Component {
+class Square extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: null,
+    };
+  }
+  render() {
+    return (
+      <button className="square" onClick={() => this.setState({ value: "X" })}>
+        {this.state.value ? this.state.value : ''}
+      </button>
+    );
+  }
+}
+
+class Board extends Component {
+  constructor(props) {
+    super(props);
+    this.name = "Board";
+  }
+  renderSquare(i) {
+    return <Square value={i} />;
+  }
+
   render() {
     return (
       <div>
-        MyComponent
-        <div>Hello</div>
-        <div>World</div>
-        <div>
-          {true}
-          {this.children}
+        <div className="board-row">
+          {this.renderSquare(0)}
+          {this.renderSquare(1)}
+          {this.renderSquare(2)}
+        </div>
+        <div className="board-row">
+          {this.renderSquare(3)}
+          {this.renderSquare(4)}
+          {this.renderSquare(5)}
+        </div>
+        <div className="board-row">
+          {this.renderSquare(6)}
+          {this.renderSquare(7)}
+          {this.renderSquare(8)}
         </div>
       </div>
     );
   }
 }
 
-let a = (
-  <MyComponent name="a" id="a_id">
-    <div>children-data</div>
-  </MyComponent>
-);
+let a = <Board />;
 // console.log(a);
 // document.body.appendChild(a);
 ToyReact.render(a, document.body);
